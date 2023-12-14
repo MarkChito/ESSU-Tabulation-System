@@ -1,3 +1,14 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if ($_SESSION["user_type"] != "judge") {
+    http_response_code(403);
+    exit();
+}
+?>
+
 <?php include_once "header.php" ?>
 
 <!-- Start Main Content -->

@@ -20,8 +20,10 @@
                             <table class="table table-hover datatable">
                                 <thead>
                                     <tr>
+                                        <th>Candidate Name</th>
                                         <th>Category</th>
-                                        <th>Description</th>
+                                        <th>Judge Name</th>
+                                        <th>Score</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>

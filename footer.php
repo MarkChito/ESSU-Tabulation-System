@@ -63,6 +63,27 @@
             "bSort": false,
             "order": []
         })
+
+        $("#btn_dashboard").click(function() {
+            var formData = new FormData();
+            
+            formData.append('dashboard', true);
+            
+            $.ajax({
+                url: 'server.php',
+                data: formData,
+                type: 'POST',
+                dataType: 'JSON',
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    location.href = "./"
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        })
     })
 </script>
 </body>

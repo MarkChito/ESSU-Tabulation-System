@@ -31,6 +31,7 @@ if (isset($_POST["login"])) {
 
         if (password_verify($password, $hashed_password)) {
             $_SESSION['id'] = $user_id;
+            $_SESSION["current_tab"] = "Dashboard";
 
             $currentDateTime = time();
 
@@ -57,8 +58,10 @@ if (isset($_POST["login"])) {
     echo json_encode(true);
 }
 
-if (isset($_POST["register"])) {
-    echo json_encode(false);
+if (isset($_POST["dashboard"])) {
+    $_SESSION["current_tab"] = "Dashboard";
+
+    echo json_encode(true);
 }
 
 if (isset($_POST["logout"])) {

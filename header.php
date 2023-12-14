@@ -20,7 +20,7 @@ if (!isset($_SESSION["id"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Tabulation System</title>
+    <title>Tabulation System<?= " - " . $_SESSION["current_tab"] ?></title>
 
     <link rel="shortcut icon" href="./assets/img/favicon.ico" type="image/x-icon">
 
@@ -71,28 +71,28 @@ if (!isset($_SESSION["id"])) {
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="./" class="nav-link">
+                            <a href="javascript:void(0)" id="btn_dashboard" class="nav-link <?= $_SESSION["current_tab"] == "Dashboard" ? "active" : null ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>Dashboard</p>
                                 <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="404.php" class="nav-link">
                                 <i class="nav-icon fas fa-user-tie"></i>
                                 <p>Manage Judges</p>
                                 <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="404.php" class="nav-link">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>Manage Candidates</p>
                                 <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="404.php" class="nav-link">
                                 <i class="nav-icon fas fa-poll"></i>
                                 <p>Manage Scores</p>
                                 <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>

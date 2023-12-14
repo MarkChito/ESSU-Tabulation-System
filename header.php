@@ -11,6 +11,17 @@ if (!isset($_SESSION["id"])) {
 
     header("location: login.php");
 }
+
+$db_host = "localhost";
+$db_username = "root";
+$db_password = "";
+$db_name = "essu_tabulation_system";
+
+$conn = new mysqli($db_host, $db_username, $db_password, $db_name);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +59,7 @@ if (!isset($_SESSION["id"])) {
                 <li class="nav-item dropdown user-menu">
                     <a class="dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="./assets/img/default_user.png" class="img-circle elevation-2 me-1" alt="User Image" width="32" height="32">
-                        <span class="d-none d-md-inline text-bold">Administrator</span>
+                        <span class="d-none d-md-inline text-bold"><?= $_SESSION["name"] ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="javascript:void(0)"><i class="fas fa-user me-3"></i> Account</a></li>
@@ -70,34 +81,38 @@ if (!isset($_SESSION["id"])) {
                 </div>
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="javascript:void(0)" id="btn_dashboard" class="nav-link <?= $_SESSION["current_tab"] == "Dashboard" ? "active" : null ?>">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>Dashboard</p>
-                                <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="404.php" class="nav-link">
-                                <i class="nav-icon fas fa-user-tie"></i>
-                                <p>Manage Judges</p>
-                                <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="404.php" class="nav-link">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>Manage Candidates</p>
-                                <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="404.php" class="nav-link">
-                                <i class="nav-icon fas fa-poll"></i>
-                                <p>Manage Scores</p>
-                                <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
-                            </a>
-                        </li>
+                        <?php if ($_SESSION["user_type"] == "admin") : ?>
+                            <li class="nav-item">
+                                <a href="javascript:void(0)" id="btn_dashboard" class="nav-link <?= $_SESSION["current_tab"] == "Dashboard" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>Dashboard</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:void(0)" id="btn_manage_judges" class="nav-link <?= $_SESSION["current_tab"] == "Manage Judges" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-user-tie"></i>
+                                    <p>Manage Judges</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:void(0)" id="btn_manage_candidates" class="nav-link <?= $_SESSION["current_tab"] == "Manage Candidates" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>Manage Candidates</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                        <?php endif ?>
+                        <?php if ($_SESSION["user_type"] == "judge") : ?>
+                            <li class="nav-item">
+                                <a href="javascript:void(0)" id="btn_manage_scores" class="nav-link <?= $_SESSION["current_tab"] == "Manage Scores" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-poll"></i>
+                                    <p>Manage Scores</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                        <?php endif ?>
                         <li class="nav-item">
                             <a href="javascript:void(0)" class="nav-link btn_logout">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2023 at 05:45 AM
+-- Generation Time: Dec 14, 2023 at 07:40 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -24,6 +24,36 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `candidates`
+--
+
+CREATE TABLE `candidates` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `mobile_number` varchar(11) NOT NULL,
+  `birthday` varchar(10) NOT NULL,
+  `sex` varchar(6) NOT NULL,
+  `address` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `judges`
+--
+
+CREATE TABLE `judges` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `mobile_number` varchar(255) NOT NULL,
+  `birthday` varchar(255) NOT NULL,
+  `sex` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `logs`
 --
 
@@ -37,6 +67,19 @@ CREATE TABLE `logs` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `scores`
+--
+
+CREATE TABLE `scores` (
+  `id` int(11) NOT NULL,
+  `judge_id` int(11) NOT NULL,
+  `candidate_id` int(11) NOT NULL,
+  `score` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -44,24 +87,43 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `username` varchar(30) NOT NULL,
-  `password` varchar(100) NOT NULL
+  `password` varchar(100) NOT NULL,
+  `user_type` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `username`, `password`) VALUES
-(1, 'Administrator', 'admin', '$2y$10$qZaaUdNw9dwAlnMZDFfqSOj5mVKvlNC86XHgRRWs/UaKyQMHZINby');
+INSERT INTO `users` (`id`, `name`, `username`, `password`, `user_type`) VALUES
+(1, 'Administrator', 'admin', '$2y$10$qZaaUdNw9dwAlnMZDFfqSOj5mVKvlNC86XHgRRWs/UaKyQMHZINby', 'admin');
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `candidates`
+--
+ALTER TABLE `candidates`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `judges`
+--
+ALTER TABLE `judges`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `logs`
 --
 ALTER TABLE `logs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `scores`
+--
+ALTER TABLE `scores`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -75,9 +137,27 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `candidates`
+--
+ALTER TABLE `candidates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `judges`
+--
+ALTER TABLE `judges`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `scores`
+--
+ALTER TABLE `scores`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

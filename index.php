@@ -4,7 +4,15 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if (isset($_SESSION["id"])) {
-    header("location: main.php");
+    if ($_SESSION["user_type"] == "admin") {
+        $_SESSION["current_tab"] = "Dashboard";
+
+        header("location: dashboard.php");
+    } else {
+        $_SESSION["current_tab"] = "Manage Scores";
+
+        header("location: manage_scores.php");
+    }
 } else {
     header("location: login.php");
 }

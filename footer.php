@@ -157,6 +157,8 @@
                 <div class="modal-footer">
                     <input type="hidden" id="set_score_candidate_id">
                     <input type="hidden" id="set_score_judge_id">
+                    <input type="hidden" id="set_score_category_id">
+                    <input type="hidden" id="set_score_category_name">
 
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="set_score_submit">Submit</button>
@@ -192,6 +194,14 @@
         if (alert) {
             sweet_alert(alert);
         }
+
+        $('.judge-btn').click(function() {
+            var target = $(this).data('target');
+
+            $('.collapse').not(target).collapse('hide');
+            $('.judge-btn').removeClass('font-weight-bold');
+            $(this).addClass('font-weight-bold');
+        });
 
         $(".btn_logout").click(function() {
             var formData = new FormData();
@@ -245,6 +255,27 @@
                 contentType: false,
                 success: function(response) {
                     location.href = "./"
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        })
+
+        $("#btn_judges_scores").click(function() {
+            var formData = new FormData();
+
+            formData.append('judges_scores', true);
+
+            $.ajax({
+                url: 'server.php',
+                data: formData,
+                type: 'POST',
+                dataType: 'JSON',
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    location.href = "./judges_scores.php"
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -423,10 +454,14 @@
             var candidate_id = $(this).attr("candidate_id");
             var candidate_name = $(this).attr("candidate_name");
             var judge_id = $(this).attr("judge_id");
+            var category_id = $(this).attr("category_id");
+            var category_name = $(this).attr("category_name");
 
             $("#set_score_candidate_name").val(candidate_name);
             $("#set_score_candidate_id").val(candidate_id);
             $("#set_score_judge_id").val(judge_id);
+            $("#set_score_category_id").val(category_id);
+            $("#set_score_category_name").val(category_name);
 
             $("#set_score_modal").modal().show();
         })
@@ -434,6 +469,7 @@
         $("#set_score_form").submit(function() {
             var candidate_id = $("#set_score_candidate_id").val();
             var judge_id = $("#set_score_judge_id").val();
+            var category_id = $("#set_score_category_id").val();
             var score = $("#set_score_score").val();
 
             if (score > 100 || score <= 0) {
@@ -444,12 +480,13 @@
                 $("#set_score_submit").text("Processing...");
 
                 var formData = new FormData();
-                
+
                 formData.append('candidate_id', candidate_id);
                 formData.append('judge_id', judge_id);
+                formData.append('category_id', category_id);
                 formData.append('score', score);
                 formData.append('set_score', true);
-                
+
                 $.ajax({
                     url: 'server.php',
                     data: formData,
@@ -470,6 +507,69 @@
         $("#set_score_score").keypress(function() {
             $("#error_set_score_score").addClass("d-none");
             $("#set_score_score").removeClass("is-invalid");
+        })
+
+        $("#btn_start_event").click(function() {
+            var formData = new FormData();
+
+            formData.append('start_event', true);
+
+            $.ajax({
+                url: 'server.php',
+                data: formData,
+                type: 'POST',
+                dataType: 'JSON',
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    location.href = "./dashboard.php";
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        })
+
+        $("#btn_change_next_event").click(function() {
+            var formData = new FormData();
+
+            formData.append('change_next_event', true);
+
+            $.ajax({
+                url: 'server.php',
+                data: formData,
+                type: 'POST',
+                dataType: 'JSON',
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    location.href = "./dashboard.php";
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        })
+
+        $("#btn_stop_event").click(function() {
+            var formData = new FormData();
+
+            formData.append('stop_event', true);
+
+            $.ajax({
+                url: 'server.php',
+                data: formData,
+                type: 'POST',
+                dataType: 'JSON',
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    location.href = "./dashboard.php";
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
         })
 
         function sweet_alert(alert) {

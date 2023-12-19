@@ -90,6 +90,13 @@ if ($conn->connect_error) {
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="javascript:void(0)" id="btn_judges_scores" class="nav-link <?= $_SESSION["current_tab"] == "Judges Scores" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-gavel"></i>
+                                    <p>Judges Scores</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="javascript:void(0)" id="btn_manage_judges" class="nav-link <?= $_SESSION["current_tab"] == "Manage Judges" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-user-tie"></i>
                                     <p>Manage Judges</p>

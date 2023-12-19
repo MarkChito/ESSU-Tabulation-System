@@ -15,7 +15,7 @@ if ($_SESSION["user_type"] != "admin") {
 <div class="content-wrapper">
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-lg-6">
                     <h2 class="mt-3">Manage Candidates</h2>
                 </div>

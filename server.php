@@ -67,6 +67,12 @@ if (isset($_POST["dashboard"])) {
     echo json_encode(true);
 }
 
+if (isset($_POST["judges_scores"])) {
+    $_SESSION["current_tab"] = "Judges Scores";
+
+    echo json_encode(true);
+}
+
 if (isset($_POST["manage_judges"])) {
     $_SESSION["current_tab"] = "Manage Judges";
 
@@ -99,7 +105,7 @@ if (isset($_POST["new_judge"])) {
     if ($result->num_rows > 0) {
         echo json_encode(false);
     } else {
-        $sql = "INSERT INTO `users` (`id`, `name`, `username`, `password`) VALUES (NULL, '" . $name . "', '" . $username . "', '" . password_hash($password, PASSWORD_BCRYPT) . "')";
+        $sql = "INSERT INTO `users` (`id`, `name`, `username`, `password`, `user_type`) VALUES (NULL, '" . $name . "', '" . $username . "', '" . password_hash($password, PASSWORD_BCRYPT) . "', 'judge')";
         $conn->query($sql);
 
         $sql = "SELECT * FROM `users` WHERE `username` = '" . $username . "'";
@@ -144,14 +150,66 @@ if (isset($_POST["new_candidate"])) {
 if (isset($_POST["set_score"])) {
     $candidate_id = $_POST["candidate_id"];
     $judge_id = $_POST["judge_id"];
+    $category_id = $_POST["category_id"];
     $score = $_POST["score"];
 
-    $sql = "INSERT INTO `scores` (`id`, `judge_id`, `candidate_id`, `score`) VALUES (NULL, '" . $judge_id . "', '" . $candidate_id . "', '" . $score . "')";
+    $sql = "INSERT INTO `scores` (`id`, `judge_id`, `candidate_id`, `category_id`, `score`) VALUES (NULL, '" . $judge_id . "', '" . $candidate_id . "', '" . $category_id . "', '" . $score . "')";
     $conn->query($sql);
 
     $_SESSION["alert"] =  array(
         "title" => "Success!",
         "message" => "A candidate has been scored successfully!",
+        "type" => "success"
+    );
+
+    echo json_encode(true);
+}
+
+if (isset($_POST["start_event"])) {
+    $sql_1 = "UPDATE `event` SET `status` = 'Pending'";
+    $conn->query($sql_1);
+
+    $sql_2 = "TRUNCATE TABLE `scores`";
+    $conn->query($sql_2);
+
+    $sql_3 = "UPDATE `event` SET `status` = 'Current' ORDER BY id LIMIT 1";
+    $conn->query($sql_3);
+
+    $_SESSION["alert"] =  array(
+        "title" => "Success!",
+        "message" => "The current event has been updated!",
+        "type" => "success"
+    );
+
+    echo json_encode(true);
+}
+
+if (isset($_POST["change_next_event"])) {
+    $sql_1 = "SELECT * FROM `event` WHERE `status` = 'Current'";
+    $conn->query($sql_1);
+
+    $sql_2 = "UPDATE `event` SET `status` = 'Current' WHERE `id` = (SELECT MIN(`id`) FROM `event` WHERE `id` > (SELECT MAX(`id`) FROM `event` WHERE `status` = 'Current') AND `status` = 'Pending')";
+    $conn->query($sql_2);
+
+    $sql_3 = "UPDATE `event` SET `status` = 'Done' WHERE `status` = 'Current' LIMIT 1";
+    $conn->query($sql_3);
+
+    $_SESSION["alert"] =  array(
+        "title" => "Success!",
+        "message" => "The current event has been updated!",
+        "type" => "success"
+    );
+
+    echo json_encode(true);
+}
+
+if (isset($_POST["stop_event"])) {
+    $sql = "UPDATE `event` SET `status` = 'Done' WHERE `status` = 'Current'";
+    $conn->query($sql);
+
+    $_SESSION["alert"] =  array(
+        "title" => "Success!",
+        "message" => "The current event has been updated!",
         "type" => "success"
     );
 
